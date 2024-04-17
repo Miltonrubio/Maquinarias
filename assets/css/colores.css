@@ -1,0 +1,31 @@
+.statusPendiente{
+
+/* color: #FFD591 !important; */
+
+background-color: #F7FF00 !important;
+color: black!important;
+font-weight: bolder;
+}
+
+.statusEntregado{
+
+   
+   color: #0B9357 !important;
+   font-weight: bolder;
+
+   
+   
+}
+
+.statusRechazado{
+
+/*color: #EF3636 !important; */
+    color: #FF1111 !important;
+
+    font-weight: bolder;
+    
+}
+
+.modal-bg-over{
+    background-color: rgba(36, 36, 37, 0.730);
+}

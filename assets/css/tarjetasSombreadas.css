@@ -1,0 +1,54 @@
+.cardanimation {
+    position: relative;
+    overflow: hidden;
+}
+
+.cardanimation img {
+    width: 100%;
+    height: auto;
+}
+
+.card-content {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 100%;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.cardanimation:hover .card-content {
+    bottom: -100%;
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 100%;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+    visibility: hidden;
+    opacity: 0;
+}
+
+
+.cardanimation:hover .card-overlay {
+    bottom: 0;
+    visibility: visible;
+    opacity: 1;
+}
+
+/*
+
+.cardanimation .btn_eliminar {
+    background: red;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+*/

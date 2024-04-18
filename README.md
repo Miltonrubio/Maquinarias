@@ -1,2 +1,2 @@
-# controlnotasmayoreoweb
-plataforma notas mayoreo version web
+# sistema para gestion de maquinas
+plataforma de maquinaria version web

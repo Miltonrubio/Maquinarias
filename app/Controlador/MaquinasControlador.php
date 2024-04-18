@@ -10,8 +10,20 @@ $ID_sesionIniciada = $_SESSION['ID_usuario'];
 
 switch ($_REQUEST["operador"]) {
     case 'obtener_maquinas':
-        $usuarios = $bd->obtenerMaquinas();
-        if ($usuarios !== false) {
+
+        $buscadorMaquinas = isset($_POST['buscadorMaquinas']) ? $_POST['buscadorMaquinas'] : '';
+
+        if (!empty($buscadorMaquinas) || $buscadorMaquinas !== "") {
+
+            $usuarios = $bd->obtenerMaquinasConFiltro($buscadorMaquinas);
+        } else {
+
+            $usuarios = $bd->obtenerMaquinas();
+
+        }
+
+
+        if ($usuarios) {
             if (count($usuarios) > 0) {
                 $response = json_encode($usuarios);
             } else {
@@ -58,20 +70,81 @@ switch ($_REQUEST["operador"]) {
 
 
 
-        case 'eliminar_maquina':
+    case 'eliminar_maquina':
 
-            $ID_maquina = isset($_POST['ID_maquina']) ? $_POST['ID_maquina'] : '';
-            if (!empty($ID_maquina)) {
-                if ($bd->EliminarMaquina($ID_maquina)) {
-                    $response = 'success';
-                }else {
-                    $response = 'error';
+        $ID_maquina = isset($_POST['ID_maquina']) ? $_POST['ID_maquina'] : '';
+        if (!empty($ID_maquina)) {
+            if ($bd->EliminarMaquina($ID_maquina)) {
+                $response = 'success';
+            } else {
+                $response = 'error';
+            }
+        } else {
+            $response = 'required';
+        }
+        echo $response;
+        break;
+
+
+    case 'editor_maquina':
+
+
+        $ID_maquina = isset($_POST['id_maquinaEdit']) ? $_POST['id_maquinaEdit'] : '';
+
+        $nombre_maquina = isset($_POST['nombre_maquinaEdit']) ? $_POST['nombre_maquinaEdit'] : '';
+        $marca_maquina = isset($_POST['marca_maquinaEdit']) ? $_POST['marca_maquinaEdit'] : '';
+        $modelo_maquina = isset($_POST['modelo_maquinaEdit']) ? $_POST['modelo_maquinaEdit'] : '';
+        $num_serie = isset($_POST['num_serieEdit']) ? $_POST['num_serieEdit'] : '';
+        $observaciones_maq = isset($_POST['observaciones_maqEdit']) ? $_POST['observaciones_maqEdit'] : '';
+        $fecha_adqui = isset($_POST['fecha_adquiEdit']) ? $_POST['fecha_adquiEdit'] : '';
+        $foto_maquinaEdit = isset($_FILES['foto_maquinaEdit']) ? $_FILES['foto_maquinaEdit'] : '';
+
+
+
+        try {
+            if (!empty($nombre_maquina)  ||   !empty($marca_maquina)  ||  !empty($modelo_maquina)  ||  !empty($num_serie) ||  !empty($observaciones_maq)  ||  !empty($fecha_adqui)) {
+
+
+                if (!empty($foto_maquinaEdit['name'])) {
+
+
+                    $opcion = 13;
+                    $nombreFoto = $bd->subirImagenAAPI($foto_maquinaEdit, $opcion);
+
+                    if (!empty($nombreFoto)) {
+
+                        if ($bd->EditarMaquinaConFoto($nombre_maquina, $marca_maquina, $modelo_maquina, $num_serie, $observaciones_maq, $fecha_adqui, $nombreFoto, $ID_maquina)) {
+                            $response = 'success';
+                        } else {
+                            $response = 'error';
+                        }
+                    } else {
+
+                        $response = 'Hubo un error con la foto';
+                    }
+                } else {
+                    if ($bd->EditarMaquinaSinFoto($nombre_maquina, $marca_maquina, $modelo_maquina, $num_serie, $observaciones_maq, $fecha_adqui, $ID_maquina)) {
+                        $response = 'success';
+                    } else {
+                        $response = 'error';
+                    }
                 }
-            }else {
+            } else {
                 $response = 'required';
             }
-            echo $response;
-            break;
+        } catch (\Throwable $th) {
+            $response = 'El error es ' . $th;
+        }
+
+
+
+        echo $response;
+        break;
+
+
+
+
+
 
 
         /*

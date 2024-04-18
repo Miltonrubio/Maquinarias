@@ -77,18 +77,21 @@ if ($_SESSION['tipo'] !== 'SUPERADMIN') {
                         <div class="row">
                             <div class="col-md-12 mt-2 mb-2">
                                 <div class="card">
-                                    <div class="col-md-12">
-                                        <div class="row align-items-center m-1">
-                                            <div class="col">
-                                                <h2 class="title-table2 ms-2 text-primary">MAQUINAS DE <?php echo  strtoupper($_SESSION['empresa']) ?> </h2>
-                                            </div>
-
-                                            <div class="col-3 text-end">
-                                                <button class="btn btn-success mx-3" onclick="modalAgregarMaquina();"> <i class="bi bi-plus-lg"> Agregar</i></button>
+                                    <form method="POST" id="form_maquinas" enctype="multipart/form-data">
+                                        <div class="col-md-12">
+                                            <div class="row align-items-center m-1">
+                                                <div class="col">
+                                                    <h2 class="title-table2 ms-2 text-primary">MAQUINAS DE <?php echo  strtoupper($_SESSION['empresa']) ?> </h2>
+                                                </div>
+                                                <div class="col">
+                                                    <input class="form-control" type="text" placeholder="Buscar maquina" id="buscadorMaquinas" name="buscadorMaquinas">
+                                                </div>
+                                                <div class="col-12 col-md-3 text-end">
+                                                    <button class="btn btn-success mx-3" onclick="modalAgregarMaquina();"> <i class="bi bi-plus-lg"> Agregar</i></button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-
+                                    </form>
                                 </div>
 
                             </div>
@@ -103,11 +106,20 @@ if ($_SESSION['tipo'] !== 'SUPERADMIN') {
             </div>
         </div>
     </div>
+
+<style>
+li:hover  {
+background-color: #A179FD !important;
+color: white !important;
+cursor: pointer;
+}
+
+    </style>
+
     <?php
-    include './Modales/Maquinaria/ModalAgregarMaquina.php';
-    include './Modales/EliminarUsuario.php';
-    include './Modales/EditarUsuario.php';
-    include './Modales/VerPassword.php';
+    include './Modales/Maquinaria/modalAgregarMaquina.php';
+    include './Modales/Maquinaria/modalEditarMaquina.php';
+    include './Modales/Maquinaria/modalAsignarAlarma.php';
     ?>
     <!-- / Layout wrapper -->
     <!-- Core JS -->

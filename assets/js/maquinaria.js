@@ -5,11 +5,26 @@ function init() {
 
 }
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    const buscador = document.getElementById("buscadorMaquinas");
+
+    buscador.addEventListener("input", function () {
+        obtenerMaquinas();
+    });
+});
+
+
+
 function obtenerMaquinas() {
+
+    var filtro = document.getElementById("buscadorMaquinas");
+    var data = {"buscadorMaquinas": filtro.value };
 
     tableUsuarios = $('#contenedorCardsMaquinas');
     $.ajax({
         type: 'POST',
+        data: data,
         url: '../../app/Controlador/MaquinasControlador.php?operador=obtener_maquinas',
         success: function (response) {
             //     $('#inputBusquedaUsuarios').val('');
@@ -25,8 +40,8 @@ function procesarRespuestaMaquinas(response, table) {
 
             '<div class="container"> ' +
             '<div class="text-center">' +
-            '<div class="card mt-3 p-4">'+
-            '<div class="card-content">'+
+            '<div class="card mt-3 p-4">' +
+            '<div class="card-content">' +
             '<div  class="container" id="lottieSinMaquinasReg" name="lottieSinMaquinasReg"  style="height: 350px; width: 350px; z-index:999;">' +
             '</div>' +
             '<H4> NO SE HAN REGISTRADO MAQUINAS </H4>' +
@@ -52,36 +67,80 @@ function procesarRespuestaMaquinas(response, table) {
 
 
     } else if (response.trim() == 'error') {
-        toastr.error('Error al cargar los datos', 'Usuarios');
+        table.append(
+
+            '<div class="container"> ' +
+            '<div class="text-center">' +
+            '<div class="card mt-3 p-4">' +
+            '<div class="card-content">' +
+            '<div  class="container" id="lottieSinMaquinasEncontradas" name="lottieSinMaquinasEncontradas"  style="height: 350px; width: 350px; z-index:999;">' +
+            '</div>' +
+            '<H4> NO SE HAN ENCONTRARON RESULTADOS </H4>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>'
+        );
+
+
+        const animationContainer = document.getElementById('lottieSinMaquinasEncontradas');
+        const animationOptions = {
+            container: animationContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: '../../assets/img/lotties/noresultados.json'
+        };
+
+
+        const anim = lottie.loadAnimation(animationOptions);
+
+
+
+
+
     } else {
         $.each(JSON.parse(response), function (ID, maquina) {
             table.append(
 
                 '<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 mb-2 mt-2">' +
-                '<div class="card h-90 p-1">' +
+                '<div class="card h-100 p-1">' +
                 '<div class="dropdown bg-light">' +
                 '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-list"></i>' +
                 '</button>' +
 
                 '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">' +
-                '<li class="dropdown-item" onclick="EditarMaquina(' + maquina.ID_maquina + ')" >Editar Maquina</li>' +
-                '<li class="dropdown-item" onclick="AsignarAlertaMant(' + maquina.ID_maquina + ')" >Asignar Mantenimiento</li>' +
+                '<li class="dropdown-item" onclick="modalEditarMaquina(' + maquina.ID_maquina + ',\'' + maquina.nombre_maquina + '\'' + ',\'' + maquina.marca + '\'' + ',\'' + maquina.modelo + '\'' + ',\'' + maquina.observaciones + '\'' + ',\'' + maquina.foto_maquina + '\'' + ',\'' + maquina.fecha_compra + '\' , ' + maquina.nserie + ' )" >Editar Maquina</li>' +
+                '<li class="dropdown-item" onclick="modalAsignarAlarma(' + maquina.ID_maquina + ',\'' + maquina.nombre_maquina + '\')" >Asignar Mantenimiento</li>' +
+                '<li class="dropdown-item" onclick="CrearChecks(' + maquina.ID_maquina + ')" >Crear Checks</li>' +
+                '<li class="dropdown-item" onclick="CrearChecks(' + maquina.ID_maquina + ')" >Generar PDF de revisiones</li>' +
                 '<li class="dropdown-item" onclick="ModalEliminarMaquina(' + maquina.ID_maquina + ',\'' + maquina.nombre_maquina + '\');" >Eliminar Maquina</li>' +
                 '</ul>' +
 
-                '<div class="card" >' +
-                '<img src="http://tallergeorgio.hopto.org:5613/tallergeorgio/imagenes/maquinas/' + maquina.foto_maquina + '" class="card-img-top" alt="...">' + 
+                '<div class="bg-white" >' +
+                '<img src="http://tallergeorgio.hopto.org:5613/tallergeorgio/imagenes/maquinas/' + maquina.foto_maquina + '" class="card-img-top" alt="...">' +
                 '<div class="card-body">' +
                 '<h3 class="text-center text-primary">' + maquina.nombre_maquina.toUpperCase() + ' </h3>' +
-                '<p class="card-text">' + maquina.marca.toUpperCase() + " " + maquina.modelo.toUpperCase() + '</p>' +
-                '<p class="card-text">' + maquina.observaciones + '</p>' +
+
+                '<div class="col-md-12">'+
+
+                '<div class="row ">'+
+                '<div class="col-md-6 text-center p-2 bg-primary">'+
+                '<p class="card-text text-white "> Marca: ' + maquina.marca.toUpperCase()  + '</p>' +
                 '</div>' +
+                '<div class="col-md-6 text-center p-2 bg-success">'+
+                '<p class="card-text text-white  "> Modelo: ' + maquina.modelo.toUpperCase() + '</p>' +
+                '</div>' +
+                '</div>' +
+
+
+                '<p class="card-text text-dark">' + maquina.observaciones + '</p>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>'
-
+                
                 /*
                 '<tr>'+
                 '<td>'+usuario.nombre_usuario+'</td>'+
@@ -132,14 +191,7 @@ function EliminarMaquina(ID_maquina, nombre_maquina) {
         type: "POST",
 
         data: data,
-        /*
-        method: "POST",
-        dataType: "html",
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        */
+
         url: '../../app/Controlador/MaquinasControlador.php?operador=eliminar_maquina',
         success: function (response) {
             response = response.trim();
@@ -166,17 +218,13 @@ function previewImage() {
     var file = fileInput.files[0];
     var reader = new FileReader();
 
-    // Verificar si se ha seleccionado un archivo
     if (!file) {
         preview.innerHTML = 'No hay imagen seleccionada';
         return;
     }
 
-    // Verificar si el archivo seleccionado es una imagen
     if (!file.type.match('image.*')) {
-        // Limpiar el input de archivo
         fileInput.value = "";
-        // Mostrar mensaje de error
         toastr.error("Solo se permiten imágenes");
         return;
     }
@@ -184,8 +232,38 @@ function previewImage() {
     reader.onloadend = function () {
         var img = document.createElement('img');
         img.src = reader.result;
-        img.style.maxWidth = '350px';
-        img.style.maxHeight = '350px';
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = '100%';
+        preview.innerHTML = '';
+        preview.appendChild(img);
+    }
+
+    reader.readAsDataURL(file);
+}
+
+
+function previewImageEdit() {
+    var preview = document.getElementById('prev_imagenEd');
+    var fileInput = document.getElementById('foto_maquinaEdit');
+    var file = fileInput.files[0];
+    var reader = new FileReader();
+
+    if (!file) {
+        preview.innerHTML = 'No hay imagen seleccionada';
+        return;
+    }
+
+    if (!file.type.match('image.*')) {
+        fileInput.value = "";
+        toastr.error("Solo se permiten imágenes");
+        return;
+    }
+
+    reader.onloadend = function () {
+        var img = document.createElement('img');
+        img.src = reader.result;
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = '100%';
         preview.innerHTML = '';
         preview.appendChild(img);
     }
@@ -196,10 +274,60 @@ function previewImage() {
 
 
 
-function validarTipoArchivo(fileType) {
-    var allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/jijf'];
-    return allowedTypes.includes(fileType);
+function modalEditarMaquina(ID_maquina, nombre_maquina, marca, modelo, observaciones, foto_maquina, fecha_compra, nserie) {
+    $('#modal_editar_maquina').modal('show');
+    $('#form_agregar_maquina').trigger('reset');
+    $('#nombre_maquinaEdit').val(nombre_maquina);
+    $('#id_maquinaEdit').val(ID_maquina);
+    $('#marca_maquinaEdit').val(marca);
+    $('#modelo_maquinaEdit').val(modelo);
+    $('#num_serieEdit').val(nserie);
+    $('#observaciones_maqEdit').val(observaciones);
+    $('#fecha_adquiEdit').val(fecha_compra);
+
+
+    var preview = $('#prev_imagenEd');
+    preview.html(
+        '<img src="http://tallergeorgio.hopto.org:5613/tallergeorgio/imagenes/maquinas/' + foto_maquina + '" heigh="225px"  width="225px" >'
+    );
 }
+
+
+$(document).on("submit", "#form_editar_maquina", function (e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    $.ajax({
+        type: "POST",
+        method: "POST",
+        dataType: "html",
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        url: '../../app/Controlador/MaquinasControlador.php?operador=editor_maquina',
+        success: function (response) {
+            response = response.trim();
+            if (response === 'success') {
+                toastr.success('Se editó la maquina');
+                $('#modal_editar_maquina').modal('hide');
+                obtenerMaquinas();
+            } else if (response === 'required') {
+                toastr.info('Faltan datos');
+            } else {
+                toastr.error(response);
+            }
+        }
+    });
+})
+
+
+
+
+
+
+
+
+
 
 
 
@@ -211,8 +339,6 @@ function modalAgregarMaquina() {
 }
 
 $(document).on("submit", "#form_agregar_maquina", function (e) {
-
-
 
     e.preventDefault();
     var formData = new FormData(this);
@@ -240,111 +366,12 @@ $(document).on("submit", "#form_agregar_maquina", function (e) {
     });
 })
 
-/*
 
-function modalEliminarUsuario(idUsuario) {
-    $('#modal_eliminar_usuario').modal('show');
-    $('#ID_usuario').val(idUsuario);
+
+
+
+function modalAsignarAlarma(ID_maquina, nombre_maquina) {
+    $('#modal_alarma_mantenimiento').modal('show');
+    $('#form_alarma_mantenimiento').trigger('reset');
+
 }
-
-$(document).on("submit", "#form_eliminar_usuario", function (e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    $.ajax({
-        type: "POST",
-        method: "POST",
-        dataType: "html",
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        url: '../../app/Controlador/AdminControlador.php?operador=eliminar_usuario',
-        success: function (response) {
-            response = response.trim();
-            if (response === 'success') {
-                toastr.success('Usuario eliminado');
-                $('#modal_eliminar_usuario').modal('hide');
-                obtenerUsuarios();
-            } else if (response === 'required') {
-                toastr.info('Faltan datos');
-            } else {
-                toastr.error('Error en la operación');
-            }
-        }
-    });
-});
-
-function modalEditar(ID_usuario) {
-    $('#modal_editar_usuario').modal('show');
-    $('#form_editar_usuario').trigger('reset');
-    $('#ID_usuarioEditar').val(ID_usuario);
-    data = {
-        'ID_usuario': ID_usuario
-    };
-    $.ajax({
-        data: data,
-        type: 'POST',
-        url: '../../app/Controlador/AdminControlador.php?operador=obtener_info_usuario',
-        success: function (response) {
-            usuario = JSON.parse(response);
-            $('#editar_nombre_usuario').val(usuario.nombre);
-            $('#telefono_usuarioEdit').val(usuario.telefono);
-            $('#emailEdit').val(usuario.email);
-            $('#empresaEdit').val(usuario.empresa);
-            $('#permisosEdit').val(usuario.permisos);
-
-
-
-        }
-    });
-}
-
-$(document).on("submit", "#form_editar_usuario", function (e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    for (var entrada of formData.entries()) {
-        console.log(entrada[0] + ': ' + entrada[1]);
-    }
-    $.ajax({
-        type: "POST",
-        method: "POST",
-        dataType: "html",
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        url: '../../app/Controlador/AdminControlador.php?operador=editar_usuario',
-        success: function (response) {
-            response = response.trim();
-            if (response === 'success') {
-                toastr.success('Datos actualizados');
-                $('#modal_editar_usuario').modal('hide');
-                obtenerUsuarios();
-            } else if (response === 'required') {
-                toastr.info('Faltan datos');
-            } else {
-                toastr.error('Error en la operación');
-            }
-        }
-    });
-});
-
-function obtenerPassword(ID_usuario) {
-    $('#modal_ver_password').modal('show');
-    bodyModal = $('#body_modal_password');
-    data = {
-        'ID_usuario': ID_usuario
-    };
-    $.ajax({
-        data: data,
-        type: 'POST',
-        url: '../../app/Controlador/AdminControlador.php?operador=ver_password_usuario',
-        success: function (response) {
-            bodyModal.empty();
-            bodyModal.append(
-                '<h4 class="text-center">' + response + '</h4>'
-            );
-        }
-    });
-}
-*/

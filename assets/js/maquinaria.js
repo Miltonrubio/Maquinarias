@@ -37,17 +37,16 @@ function procesarRespuestaMaquinas(response, table) {
     table.empty();
     if (response.trim() == 'no-data') {
         table.append(
-
             '<div class="container"> ' +
-            '<div class="text-center">' +
-            '<div class="card mt-3 p-4">' +
-            '<div class="card-content">' +
-            '<div  class="container" id="lottieSinMaquinasReg" name="lottieSinMaquinasReg"  style="height: 350px; width: 350px; z-index:999;">' +
-            '</div>' +
-            '<H4> NO SE HAN REGISTRADO MAQUINAS </H4>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
+                '<div class="text-center">' +
+                    '<div class="card mt-3 p-4">' +
+                        '<div class="card-content">' +
+                            '<div  class="container" id="lottieSinMaquinasReg" name="lottieSinMaquinasReg"  style="height: 350px; width: 350px; z-index:999;">' +
+                            '</div>' +
+                            '<H4> NO SE HAN REGISTRADO MAQUINAS </H4>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
             '</div>'
         );
 
@@ -120,7 +119,7 @@ function procesarRespuestaMaquinas(response, table) {
                 '<div class="bg-white" >' +
                 '<img src="http://tallergeorgio.hopto.org:5613/tallergeorgio/imagenes/maquinas/' + maquina.foto_maquina + '" class="card-img-top" alt="...">' +
                 '<div class="card-body">' +
-                '<h3 class="text-center text-primary">' + maquina.nombre_maquina.toUpperCase() + ' </h3>' +
+                '<h3 class="nombre-maquina text-center text-primary">' + maquina.nombre_maquina.toUpperCase() + ' </h3>' +
 
                 '<div class="col-md-12">'+
 
@@ -140,20 +139,6 @@ function procesarRespuestaMaquinas(response, table) {
                 '</div>' +
                 '</div>' +
                 '</div>'
-                
-                /*
-                '<tr>'+
-                '<td>'+usuario.nombre_usuario+'</td>'+
-                '<td>'+usuario.telefono+'</td>'+
-                '<td>'+usuario.empresa+'</td>'+
-                '<td>'+usuario.rol_usuario+'</td>'+
-                '<td>'+
-                '<button type="button" class="btn btn-success btn-sm m-1" onclick="modalEditar('+usuario.ID_usuario+');"> <i class="bi bi-pen"></i></button>'+
-                '<button type="button" class="btn btn-warning btn-sm m-1" onclick="obtenerPassword('+usuario.ID_usuario+');"> <i class="bi bi-eye-fill"></i></button>'+
-                '<button type="button" class="btn btn-danger btn-sm m-1" onclick="modalEliminarUsuario('+usuario.ID_usuario+');"> <i class="bi bi-person-x-fill"></i></button>'+
-                '</td>'+
-                '</tr>'
-            */
             );
         });
     }

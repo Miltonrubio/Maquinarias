@@ -61,6 +61,9 @@ if ($_SESSION['tipo'] !== 'SUPERADMIN') {
     <script src="../../assets/vendor/js/helpers.js"></script>
     <script src="../../assets/js/config.js"></script>
     <link rel="stylesheet" href="../../librerias/toastr/toastr.min.css">
+
+    <link rel="stylesheet" href="../../assets/css/maquinaria.css">
+
     <script src="../../assets/vendor/libs/lottie/lottie.js"></script>
     <script src="../../assets/vendor/libs/lottie/lottie.min.js"></script>
 </head>
@@ -87,7 +90,7 @@ if ($_SESSION['tipo'] !== 'SUPERADMIN') {
                                                     <input class="form-control" type="text" placeholder="Buscar maquina" id="buscadorMaquinas" name="buscadorMaquinas">
                                                 </div>
                                                 <div class="col-12 col-md-3 text-end">
-                                                    <button class="btn btn-success mx-3" onclick="modalAgregarMaquina();"> <i class="bi bi-plus-lg"> Agregar</i></button>
+                                                    <button type="button" class="btn btn-success mx-3" onclick="modalAgregarMaquina();"> <i class="bi bi-plus-lg"> Agregar</i></button>
                                                 </div>
                                             </div>
                                         </div>

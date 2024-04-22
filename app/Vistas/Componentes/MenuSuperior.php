@@ -17,6 +17,9 @@
                         <a class="nav-link" aria-current="page" href="../Vistas/maquinarias.php">Maquinarias</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="../Vistas/plantillas.php">Plantillas</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="../Vistas/admin.php">Admin</a>
                     </li>
                 </ul>
@@ -28,9 +31,6 @@
         <!-- Contenedor de elementos de la barra de navegación -->
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-                <!-- Otros elementos de la barra de navegación, si es necesario -->
-
-                <!-- Desplegable con nombre del usuario y opción de cerrar sesión -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-circle"></i> <?php echo $_SESSION['nombre'] ?>
@@ -40,7 +40,7 @@
                         <!-- <a class="dropdown-item" href="#">Opción 1</a>
                             <a class="dropdown-item" href="#">Opción 2</a>
                             <div class="dropdown-divider"></div> -->
-                        <a class="dropdown-item" href="../Controlador/NotasControlador.php?operador=cerrar_sesion">
+                        <a class="dropdown-item" href="../Controlador/AdminControlador.php?operador=cerrar_sesion">
                             <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
                         </a>
                     </div>

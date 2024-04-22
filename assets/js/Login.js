@@ -9,7 +9,7 @@ $(document).on("submit", "#form_inicio_sesion", function(e) {
         cache: false,
         contentType: false,
         processData: false,
-        url : '../../app/Controlador/NotasControlador.php?operador=inicio_sesion',
+        url : '../../app/Controlador/AdminControlador.php?operador=inicio_sesion',
         success : function (response) {
             response = response.trim();
             switch (response) {

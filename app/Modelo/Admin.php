@@ -148,4 +148,22 @@ function registrarUsuario($nombre, $telefono, $clave, $empresa, $permisos, $emai
         $result->bindParam(':permisosEdit', $permisosEdit);
         return $result->execute();
     }
+
+    function login($phone, $password) {
+        $query = "SELECT * FROM usuarios 
+        LEFT JOIN empresa ON  empresa.ID_empresa =  usuarios.empresa
+        WHERE usuarios.telefono = :telefono AND usuarios.status_usuario = 1";
+        $result = $this->cnx->prepare($query);
+        $result->bindParam(':telefono', $phone);
+        if ($result->execute()) {
+            $user = $result->fetch(PDO::FETCH_ASSOC);
+            if ($user['clave'] === $password) {
+                return $user;
+            }else {
+                return 'not-found';
+            }
+        }else {
+            return false;
+        }
+    }
 }

@@ -27,18 +27,18 @@ switch ($_REQUEST["operador"]) {
         $empresa = isset($_POST['empresa']) ? $_POST['empresa'] : '';
         $permisos = isset($_POST['permisos']) ? $_POST['permisos'] : '';
         $email = isset($_POST['email']) ? $_POST['email'] : '';
-        if (!empty($nombre) && !empty($telefono) && !empty($empresa) && !empty($password) && !empty($email)&& !empty($permisos) ) {
+        if (!empty($nombre) && !empty($telefono) && !empty($empresa) && !empty($password) && !empty($email) && !empty($permisos)) {
             $passHash = $bd->encryption($password);
             if ($bd->existenciaUsuario($telefono)) {
-                if ($bd->registrarUsuario  ($nombre, $telefono, $passHash, $empresa, $permisos, $email)){  /*($nombre, $telefono, $tipo, $passHash)){*/ 
+                if ($bd->registrarUsuario($nombre, $telefono, $passHash, $empresa, $permisos, $email)) {  /*($nombre, $telefono, $tipo, $passHash)){*/
                     $response = 'success';
-                }else {
+                } else {
                     $response = 'error';
                 }
-            }else {
+            } else {
                 $response = 'exist';
             }
-        }else {
+        } else {
             $response = 'required';
         }
         echo $response;
@@ -49,10 +49,10 @@ switch ($_REQUEST["operador"]) {
         if (!empty($id)) {
             if ($bd->desactivarUsuario($id)) {
                 $response = 'success';
-            }else {
+            } else {
                 $response = 'error';
             }
-        }else {
+        } else {
             $response = 'required';
         }
         echo $response;
@@ -60,7 +60,7 @@ switch ($_REQUEST["operador"]) {
 
     case 'editar_usuario':
 
-/*
+        /*
 
             $('#editar_nombre_usuario').val(usuario.nombre);
             $('#telefono_usuarioEdit').val(usuario.telefono);
@@ -77,7 +77,7 @@ switch ($_REQUEST["operador"]) {
         $empresaEdit = isset($_POST['empresaEdit']) ? $_POST['empresaEdit'] : '';
         $permisosEdit = isset($_POST['permisosEdit']) ? $_POST['permisosEdit'] : '';
 
-        if (!empty($ID_usuario) && !empty($nombre) && !empty($telefono) && !empty($emailEdit) && !empty($empresaEdit) && !empty($permisosEdit)){
+        if (!empty($ID_usuario) && !empty($nombre) && !empty($telefono) && !empty($emailEdit) && !empty($empresaEdit) && !empty($permisosEdit)) {
             $response = $bd->actualizarUsuario($ID_usuario, $nombre, $telefono, $emailEdit, $empresaEdit, $permisosEdit) ? 'success' : 'error';
         } else {
             $response = 'required';
@@ -90,7 +90,7 @@ switch ($_REQUEST["operador"]) {
         if (!empty($ID_usuario)) {
             $passEncript = $bd->obtenerPassword($ID_usuario);
             $response = $bd->decryption($passEncript);
-        }else {
+        } else {
             $response = 'required';
         }
         echo $response;
@@ -113,5 +113,60 @@ switch ($_REQUEST["operador"]) {
             $response = 'required';
         }
         echo $response;
+        break;
+
+    case 'inicio_sesion':
+        $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
+        $password = isset($_POST['password']) ? $_POST['password'] : '';
+        if (!empty($phone) && !empty($password)) {
+
+            // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            // echo "Contraseña hasheada: " . $hashedPassword;
+            //  $passHash = $notas->encryption($password);
+            $user = $bd->login($phone, $password);
+            if ($user === 'not-found') {
+                $response = 'not-found';
+            } else if ($user !== false) {
+
+                $_SESSION['ID_usuario'] = $user['ID_usuario'];
+                $_SESSION['nombre'] =  $user['nombre_usuario'];
+                $_SESSION['telefono'] =  $user['telefono'];
+                $_SESSION['tipo'] =  $user['rol_usuario'];
+                $_SESSION['empresa'] =  $user['nombre_empresa'];
+                $_SESSION['ID_empresa'] =  $user['ID_empresa'];
+                // $_SESSION['email'] =  $user['email']; 
+
+                $response = $user['tipo'];
+            } else {
+                $response = 'error';
+            }
+        } else {
+            $response = 'required';
+        }
+        echo $response;
+        break;
+
+    case 'cerrar_sesion':
+        // Desconfigurar todas las variables de sesión
+        $_SESSION = array();
+
+        // Borrar la cookie de sesión si está configurada
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
+            );
+        }
+
+        // Finalmente, destruir la sesión
+        session_destroy();
+        header("location:../../");
         break;
 }

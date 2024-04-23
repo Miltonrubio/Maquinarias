@@ -52,6 +52,33 @@ class Maquinas
         }
     }
 
+//Agregue esta funcion
+    function Consultarusurio($telefono, $clave)
+    {
+        $query = "SELECT * FROM usuarios 
+        LEFT JOIN empresa ON empresa.ID_empresa = usuarios.empresa
+        WHERE telefono = :telefono AND clave= :clave AND status_usuario = 1 ";
+        $result = $this->cnx->prepare($query);
+        $result->bindParam(":telefono", $telefono);
+        $result->bindParam(":clave", $clave);
+        $result->execute();
+    
+        if ($result->rowCount() > 0) {
+            while ($fila = $result->fetch(PDO::FETCH_ASSOC)) {
+                $datos[] = $fila;
+            }
+            return $datos;
+        } else {
+            if ($result->rowCount() === 0) {
+                return [];
+            } else {
+                return "No hay datos";
+            }
+        }
+    }
+
+
+
     function obtenerMaquinasConFiltro($buscadorMaquinas)
     {
         $query = "SELECT * FROM maquinas
@@ -109,7 +136,7 @@ class Maquinas
         $result->bindParam(':observaciones_maq', $observaciones_maq);
         $result->bindParam(':fecha_adqui', $fecha_adqui);
         $result->bindParam(':ID_maquina', $ID_maquina);
-        
+
         if ($result->execute()) {
             return true;
         } else {
@@ -140,12 +167,14 @@ class Maquinas
         }
     }
 
+    //Cambie esta funcion
+
     function EliminarMaquina($ID_maquina)
     {
 
         $query = "UPDATE maquinas SET status_maquina = 0 WHERE ID_maquina = $ID_maquina";
         $result = $this->cnx->prepare($query);
-        if ($result->execute()) {
+        if ($result->execute() &&  $result->rowCount() > 0) {
             return true;
         } else {
             return false;

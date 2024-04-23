@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light">
     <div class="container-fluid">
         <!-- Logo o nombre de la aplicación -->
-        <a class="navbar-brand" href="../../">Proyecto Hidalgo</a>
+        <a class="navbar-brand" href="../../">MAQUINAS</a>
 
         <!-- Botón de hamburguesa para dispositivos móviles -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +21,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="../Vistas/admin.php">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="../Vistas/ApiVista.php">Api (temporal )</a>
                     </li>
                 </ul>
             </div>

@@ -36,6 +36,8 @@ if ($_SESSION['tipo'] !== 'SUPERADMIN') {
 
     <!-- Importacion de los estilos -->
     <?php include './Componentes/ccs.php' ?>
+
+    <link rel="stylesheet" href="../../assets/css/plantillas.css">
 </head>
 
 <body>
@@ -55,14 +57,14 @@ if ($_SESSION['tipo'] !== 'SUPERADMIN') {
                                         <div class="mb-3 bg-light col-md-12">
                                             <div class="row align-items-center">
                                                 <div class="col-3">
-                                                    <h1 class="title-table2 ms-2 text-primary">Administrar plantillas</h1>
+                                                    <h1 class="title-table2 ms-2 text-primary clase-prueba">Administrar plantillas</h1>
                                                 </div>
                                                 <div class="col-3">
                                                 </div>
                                                 <div class="col-3">
                                                 </div>
                                                 <div class="col-3">
-                                                    <button class="btn btn-success mx-3" onclick="modalAgregarPlantilla();"> <i class="bi bi-person-fill-add" > Agregar</i></button>
+                                                    <button class="btn btn-success mx-3" onclick="modalAgregarPlantilla();"> <span class="mdi mdi-list-box"> Agregar</span></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -75,7 +77,7 @@ if ($_SESSION['tipo'] !== 'SUPERADMIN') {
                                                         <th>Opciones</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="bodyTableUsuarios" class="text-center">
+                                                <tbody id="body_table_plantillas" class="text-center">
 
                                                 </tbody>
                                             </table>
@@ -93,6 +95,7 @@ if ($_SESSION['tipo'] !== 'SUPERADMIN') {
     <!-- Importacion de los modales -->
     <?php
     include './Modales/PlantillasChecks/ModalAgregarPlantilla.php';
+    include './Modales/PlantillasChecks/ModalChecksPlantilla.php';
     ?>
     
     <!-- Importacion de js -->

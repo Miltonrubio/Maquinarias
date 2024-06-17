@@ -8,7 +8,8 @@ if( $servidor == "linux-gaxp"){
     if (!defined('USERNAME')) define('USERNAME', 'root');
     if (!defined('PASSWORD')) define('PASSWORD', 'admin');
     if (!defined('URL')) define('URL', 'http://192.168.1.204/tallergeorgio/imagenes/');
-        if (!defined('URLAPI')) define('URLAPI', 'http://169.254.16.246/apinotasmayoreo/Panel.php');
+    if (!defined('URLAPIIMG')) define('URLAPIIMG', 'http://tallergeorgio.hopto.org:5613/tallergeorgio/api/subirimagenes.php');
+    if (!defined('URLAPI')) define('URLAPI', 'http://169.254.16.246/apinotasmayoreo/Panel.php');
     if (!defined('DSN')) define('DSN', 'mysql:host='.SERVIDOR.';dbname='.DATABASE.';charset=utf8mb4');
 
 
@@ -18,6 +19,7 @@ if( $servidor == "linux-gaxp"){
     if (!defined('USERNAME')) define('USERNAME', 'root');
     if (!defined('PASSWORD')) define('PASSWORD', '');
     if (!defined('URL')) define('URL', 'http://tallergeorgio.hopto.org:5613/tallergeorgio/imagenes/');
+    if (!defined('URLAPIIMG')) define('URLAPIIMG', 'http://tallergeorgio.hopto.org:5613/tallergeorgio/api/subirimagenes.php');
     if (!defined('URLAPI')) define('URLAPI', 'http://hidalgo.no-ip.info:5628/apinotasmayoreo/Panel.php');
     if (!defined('DSN')) define('DSN', 'mysql:host='.SERVIDOR.';dbname='.DATABASE.';charset=utf8mb4');
 }

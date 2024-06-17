@@ -1,0 +1,9 @@
+.preview-img{
+    display: none; 
+    max-height: 200px; 
+    max-width: auto;
+}
+
+.swal2-container {
+    z-index: 9999 !important;
+}
